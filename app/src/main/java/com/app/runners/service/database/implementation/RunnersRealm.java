@@ -6,7 +6,6 @@ import com.app.runners.model.Runner;
 import com.app.runners.service.database.interfaces.IManagedRealm;
 import com.app.runners.service.database.interfaces.IRunnersDatabase;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
@@ -30,14 +29,14 @@ public class RunnersRealm extends BaseRealmHelper implements IRunnersDatabase {
 
     @Override
     public void saveRace(Race race) {
-        executeTransaction(realm -> {
+        executeTransactionAsync(realm -> {
             realm.copyToRealmOrUpdate(race);
         });
     }
 
     @Override
     public void setRanking(String name) {
-        getRealm().executeTransaction(realm -> {
+        getRealm().executeTransactionAsync(realm -> {
             RealmResults<Runner> runnerListForAgeGroup1 =  realm.where(Race.class)
                     .equalTo(Race.NAME, name)
                     .findFirst().getRunnersList().where().beginGroup().between(Runner.AGE, 0, 15).endGroup().findAll().sort(Runner.TIME, Sort.ASCENDING);

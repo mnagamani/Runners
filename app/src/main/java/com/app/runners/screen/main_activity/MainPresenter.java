@@ -36,12 +36,16 @@ public class MainPresenter extends BasePresenter {
         List<Runner> runnerList = mModel.getRunnersList();
         if (runnerList != null && runnerList.size() > 0) {
             mView.showHeader(true);
-            mView.loadRunnersList(mModel.getRunnersList());
+            setRunnerListAdapter(mModel.getRunnersList());
         } else {
             mView.showHeader(false);
             mView.showNoListToShow(true);
         }
 
+    }
+
+    public void setRunnerListAdapter(List<Runner> runnerList){
+        mView.loadRunnersList(runnerList);
     }
 
     @Override
