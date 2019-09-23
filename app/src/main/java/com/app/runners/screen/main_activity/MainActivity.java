@@ -1,6 +1,8 @@
 package com.app.runners.screen.main_activity;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.app.runners.R;
@@ -59,6 +61,25 @@ public class MainActivity extends BaseActivity implements MainView {
     @Override
     public void showNoListToShow(boolean shouldShowNoListMessage) {
         mNoListTextView.setVisibility(shouldShowNoListMessage ? View.VISIBLE : View.GONE);
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.refresh_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.refresh:
+                mPresenter.onRefresh();
+                break;
+            default: break;
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

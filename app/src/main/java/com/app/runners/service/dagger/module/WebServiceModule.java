@@ -37,7 +37,7 @@ public class WebServiceModule {
     private String getBaseUrl() {
         return "http://849fairmount.com/mobile/";
     }
-    
+
     @Provides
     @Singleton
     public IRaceApiService provideIRaceApiService() {

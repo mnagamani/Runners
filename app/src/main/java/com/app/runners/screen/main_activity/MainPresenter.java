@@ -50,4 +50,15 @@ public class MainPresenter extends BasePresenter {
         mModel.onDestroy();
     }
 
+    public void onRefresh() {
+        mView.showLoading(true);
+        mModel.getRaceDetails(() -> {
+            updateView();
+        }, error -> {
+            mView.showLoading(false);
+            mView.showHeader(false);
+            mView.showNoListToShow(true);
+            mView.showToast(error.getMessage());
+        });
+    }
 }
