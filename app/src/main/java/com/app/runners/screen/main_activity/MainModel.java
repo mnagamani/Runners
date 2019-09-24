@@ -5,7 +5,6 @@ import android.content.Context;
 import com.app.runners.app.CoreApplication;
 import com.app.runners.callbacks.ObjectCallback;
 import com.app.runners.callbacks.SimpleCallback;
-import com.app.runners.model.Race;
 import com.app.runners.model.Runner;
 import com.app.runners.screen.base.BaseModel;
 import com.app.runners.service.database.interfaces.IRunnersDatabase;
@@ -21,33 +20,52 @@ import rx.Subscription;
 public class MainModel extends BaseModel {
 
     @Inject IRunnersRepository mRunnersRepository;
-    @Inject
-    IRunnersDatabase mRunnerDatabase;
+    @Inject IRunnersDatabase mRunnerDatabase;
     private String mRaceName;
     private Subscription mRaceSubscription;
-    private Race mRace;
 
     public MainModel(Context context) {
         super(context);
         CoreApplication.getComponent().inject(this);
     }
 
-    public void getRaceDetails(SimpleCallback successCallback, ObjectCallback<Throwable> errorCallback){
+    /**
+     * gets race details
+     * @param successCallback
+     * @param errorCallback
+     */
+    public void getRaceDetails(SimpleCallback successCallback, ObjectCallback<Throwable> errorCallback) {
         mRunnersRepository.getRunnersList(race -> {
             mRaceName = race.getName();
-            successCallback.onCallback();}, errorCallback);
+            successCallback.onCallback();
+        }, errorCallback);
     }
 
+    /**
+     * returns list of runners in the race
+     * @return
+     */
+    public List<Runner> getRunnersList() {
+        return mRunnerDatabase.getListOfRunners(mRaceName);
+    }
+
+    /**
+     * returns name of the race
+     * @return
+     */
     public String getTitle() {
         return mRaceName;
     }
 
+    /**
+     * subscribes to race details
+     * @param callback
+     */
     public void subscribeToRaceDetails(SimpleCallback callback) {
-        mRaceSubscription = mRunnersRepository.subscribeToRaceDetail(mRaceName, race ->{
-                mRace = race.first();
-                mRunnerDatabase.setRanking(mRaceName);
-                callback.onCallback();
-    }
+        mRaceSubscription = mRunnersRepository.subscribeToRaceDetail(mRaceName, race -> {
+                    mRunnerDatabase.setRanking(mRaceName);
+                    callback.onCallback();
+                }
         );
     }
 
@@ -58,9 +76,5 @@ public class MainModel extends BaseModel {
             mRaceSubscription.unsubscribe();
             mRaceSubscription = null;
         }
-    }
-
-    public List<Runner> getRunnersList() {
-        return mRunnerDatabase.getListOfRunners(mRaceName);
     }
 }

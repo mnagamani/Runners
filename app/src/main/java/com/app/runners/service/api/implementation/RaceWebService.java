@@ -51,7 +51,12 @@ public class RaceWebService implements IRaceWebService, PendingCallManager {
             }
         }
     }
-    
+
+    /**
+     * @param  context
+     * @param successCallback is callback to return race
+     * @param errorCallback is callback to return throwble
+     */
     @Override
     public void getRaces(Context context, ObjectCallback<Race> successCallback, ObjectCallback<Throwable> errorCallback) {
         Call<Race> call = mRaceWebService.getRace();
@@ -69,7 +74,7 @@ public class RaceWebService implements IRaceWebService, PendingCallManager {
                     if (response.body()!= null) {
                         successCallback.onCallback(response.body());
                     } else {
-                        onFailure(call, new Exception("schema is null"));
+                        onFailure(call, new Exception("response is null"));
                     }
                 } else {
                     onFailure(call, new Exception("call failed"));

@@ -63,7 +63,6 @@ public class MainActivity extends BaseActivity implements MainView {
         mNoListTextView.setVisibility(shouldShowNoListMessage ? View.VISIBLE : View.GONE);
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.refresh_menu, menu);

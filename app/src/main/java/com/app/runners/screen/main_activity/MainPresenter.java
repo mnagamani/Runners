@@ -30,6 +30,12 @@ public class MainPresenter extends BasePresenter {
 
     }
 
+    /**
+     * updates the view
+     * sets the title
+     * sets the adapter
+     * handles if list is empty shows a error message
+     */
     private void updateView() {
         mView.showLoading(false);
         mView.setTitle(mModel.getTitle());
@@ -41,9 +47,13 @@ public class MainPresenter extends BasePresenter {
             mView.showHeader(false);
             mView.showNoListToShow(true);
         }
-
     }
 
+    /**
+     * sets the runners list to the recycler view
+     *
+     * @param runnerList
+     */
     public void setRunnerListAdapter(List<Runner> runnerList){
         mView.loadRunnersList(runnerList);
     }
@@ -54,6 +64,10 @@ public class MainPresenter extends BasePresenter {
         mModel.onDestroy();
     }
 
+    /**
+     * is called when the refresh button is clicked
+     * @return
+     */
     public void onRefresh() {
         mView.showLoading(true);
         mModel.getRaceDetails(() -> {

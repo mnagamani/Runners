@@ -20,6 +20,11 @@ public class RunnersRealm extends BaseRealmHelper implements IRunnersDatabase {
         super(managedRealm);
     }
 
+    /**
+     * returns the list of runners
+     * @param name of the name
+     * @return
+     */
     @Override
     public List<Runner> getListOfRunners(String name) {
         return getRealm().where(Race.class)
@@ -27,6 +32,10 @@ public class RunnersRealm extends BaseRealmHelper implements IRunnersDatabase {
                     .findFirst().getRunnersList().sort(Runner.TIME, Sort.ASCENDING);
     }
 
+    /**
+     * save the race to database
+     * @param  race
+     */
     @Override
     public void saveRace(Race race) {
         executeTransactionAsync(realm -> {
@@ -34,6 +43,10 @@ public class RunnersRealm extends BaseRealmHelper implements IRunnersDatabase {
         });
     }
 
+    /**
+     * sets the rank of the runners based on the time and in the age group
+     * @param  name of the race
+     */
     @Override
     public void setRanking(String name) {
         getRealm().executeTransactionAsync(realm -> {
@@ -54,6 +67,11 @@ public class RunnersRealm extends BaseRealmHelper implements IRunnersDatabase {
         });
     }
 
+    /**
+     * set rank based on time taken for the race
+     * @param  runners is the list of runners for the age group
+     * @param  realm
+     */
     private void setRank(RealmResults<Runner> runners, Realm realm){
         for(int i = 0; i < runners.size() ;  i++){
             if(i != 0 && runners.get(i).getTime() == runners.get(i - 1).getTime()){
@@ -65,6 +83,11 @@ public class RunnersRealm extends BaseRealmHelper implements IRunnersDatabase {
        realm.copyToRealm(runners);
     }
 
+    /**
+     * returns subscription
+     * @param name of the race
+     * @param action
+     */
     @Override
     public Subscription subscribeToRaceDetail(String name, Action1<RealmResults<Race>> action) {
         RealmResults<Race> races = getRealm().where(Race.class).equalTo(Race.NAME, name).findAll();

@@ -27,11 +27,21 @@ public class RunnersRepository implements IRunnersRepository {
         mRunnersWebService.cancelApiCalls();
     }
 
+    /**
+     * returns a subscription to return list of runners when there is an update in the database
+     * @param  mRaceName is the name of the race
+     * @param action realm results
+     * @return
+     */
     @Override
     public Subscription subscribeToRaceDetail(String mRaceName, Action1<RealmResults<Race>> action) {
         return mRunnersDatabase.subscribeToRaceDetail(mRaceName, action);
     }
 
+    /**
+     * @param successCallback is callback to return list of runners
+     * @param errorCallback is return throwable on error
+     */
     @Override
     public void getRunnersList(ObjectCallback<Race> successCallback, ObjectCallback<Throwable> errorCallback) {
         mRunnersWebService.getRaces(mContext, response -> {

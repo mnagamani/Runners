@@ -66,7 +66,6 @@ public class BaseRealmHelper  implements IRealmDatabase {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
         return isClosed;
     }
     
